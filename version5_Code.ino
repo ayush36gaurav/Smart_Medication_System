@@ -61,9 +61,9 @@ int count_Medicine[4] = {3, 1, 4, 6};
 bool flags[4] = {1, 1, 1, 1};                                       // flags -> If true, medicine has not been taken
 bool currFlag[4] = {0, 0, 0, 0};
 
+// Defining variables to be used in displaying data on LCD
 int setAlarm = 0, currMode = 0, cursor = 1, currLine = 0;
 int line_length[4] = {3, 4, 5, 4};
-
 int stop = 0;
 
 // Setting necessary constants
@@ -200,7 +200,7 @@ void loop()
     checkTime(Evening_Alarm[0], Evening_Alarm[1], Evening_Alarm[2], Evening_Alarm[3], Evening, Afternoon, 2);
     //  runBuzzer(Evening_Alarm[0], Evening_Alarm[1] + 5, Evening_Alarm[2],2);
     checkTime(Night_Alarm[0], Night_Alarm[1], Night_Alarm[2], Night_Alarm[3], Night, Evening, 3);
-    //  runBuzzer(Night_Alarm[0], Night_Alarm[1] + 5, Night_Alarm[2],3);
+    //  runBuzzer(count((arm[0], Night_Alarm[1] + 5, Night_Alarm[2],3);
 
     // If medicine count is less than threshold in any compartment, relay this information using a RED LED
     for (int i = 0; i < 4; i++)
@@ -278,6 +278,7 @@ int getEvent()
 void blinking()
 {
     /* Indicates the cursor location in the edit mode */
+    
     if (setAlarm == 0)
         // return if edit mode is off
         return;
@@ -402,6 +403,10 @@ int count(int arr[])
 
 void ultra_sonic(int index)
 {
+    /* 
+        Function to ascertain if a medicine compartment has been opened 
+        after using ultrasonic sensors
+    */
     if (setAlarm == 1)
         return;
         
@@ -449,6 +454,7 @@ void setupClock()
         {
             setAlarm = 1;
         }
+        delay(1500);
     }
 
     if (digitalRead(bt_right) == 1 && setAlarm == 1)
@@ -458,6 +464,7 @@ void setupClock()
         {
             cursor = 1;
         }
+        delay(1500);
     }
 
     if (digitalRead(bt_left) == 1 && setAlarm == 1)
@@ -467,6 +474,7 @@ void setupClock()
         {
             cursor = line_length[currLine];
         }
+        delay(1500);
     }
 
     if (digitalRead(bt_up) == 1 && setAlarm == 1)
@@ -477,6 +485,7 @@ void setupClock()
             currLine = 0;
         }
         cursor = 1;
+        delay(1500);
     }
 
     if (digitalRead(bt_down) == 1 && setAlarm == 1)
@@ -487,11 +496,12 @@ void setupClock()
             currLine = 3;
         }
         cursor = 1;
+        delay(1500);
     }
 
     if (digitalRead(bt_plus) == 1 && setAlarm == 1)
     {
-
+        delay(1500);
         if (currLine == 0)
         {
             switch (cursor)
@@ -612,6 +622,7 @@ void setupClock()
 
     if (digitalRead(bt_minus) == 1 && setAlarm == 1)
     {
+        delay(1500);
         if (currLine == 0)
         {
             switch (cursor)
@@ -733,6 +744,10 @@ void setupClock()
 
 void checkTime(int HH, int MM, int SS, int mode, int Event[], int prevEvent[], int index)
 {
+    /* 
+        Funtion to check if the current time matches with any of the alarm times 
+        and carry out the required functionalities.
+    */
     if (setAlarm == 1)
         return;
 
@@ -774,6 +789,7 @@ void checkTime(int HH, int MM, int SS, int mode, int Event[], int prevEvent[], i
 
 void runBuzzer(int HH, int MM, int SS, int index)
 {
+    /* Function used to run the buzzer a second time if the medicine has not been taken */
     if (setAlarm == 1)
         return;
 
@@ -791,6 +807,7 @@ void runBuzzer(int HH, int MM, int SS, int index)
 
 void ReadEeprom()
 {
+    /* Read data from EEPROM */
     for (int i = 0; i < 4; i++)
     {
         Morning_Alarm[i] = EEPROM.read(i + 1);
@@ -812,6 +829,7 @@ void ReadEeprom()
 
 void WriteEeprom()
 {
+    /* Write data to EEPROM */
     for (int i = 0; i < 4; i++)
     {
         EEPROM.write(1 + i, Morning_Alarm[i]);
