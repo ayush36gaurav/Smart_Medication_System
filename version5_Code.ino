@@ -231,33 +231,46 @@ int getEvent()
     {
         return currMode;
     }
+
     if (hh < Morning_Alarm[0])
         return 0;
-    else if (mm < Morning_Alarm[1])
-        return 0;
-    else if (ss < Morning_Alarm[2])
-        return 0;
+    else if (hh == Morning_Alarm[0])
+    {
+        if (mm < Morning_Alarm[1])
+            return 0;
+        else if (mm == Morning_Alarm[1] && ss < Morning_Alarm)
+            return 0;
+    }
 
-    if (hh < Afternoon_Alarm[0])
-        return 1;
-    else if (mm < Afternoon_Alarm[1])
-        return 1;
-    else if (ss < Afternoon_Alarm[2])
-        return 1;
+    if (hh < Aafternoon_Alarm[0])
+        return 0;
+    else if (hh == Aafternoon_Alarm[0])
+    {
+        if (mm < Aafternoon_Alarm[1])
+            return 0;
+        else if (mm == Aafternoon_Alarm[1] && ss < Aafternoon_Alarm)
+            return 0;
+    }
 
     if (hh < Evening_Alarm[0])
-        return 2;
-    else if (mm < Evening_Alarm[1])
-        return 2;
-    else if (ss < Evening_Alarm[2])
-        return 2;
+        return 0;
+    else if (hh == Evening_Alarm[0])
+    {
+        if (mm < Evening_Alarm[1])
+            return 0;
+        else if (mm == Evening_Alarm[1] && ss < Evening_Alarm)
+            return 0;
+    }
 
     if (hh < Night_Alarm[0])
-        return 3;
-    else if (mm < Night_Alarm[1])
-        return 3;
-    else if (ss < Night_Alarm[2])
-        return 3;
+        return 0;
+    else if (hh == Night_Alarm[0])
+    {
+        if (mm < Night_Alarm[1])
+            return 0;
+        else if (mm == Night_Alarm[1] && ss < Night_Alarm)
+            return 0;
+    }
 
     return 0;
 }
@@ -389,6 +402,9 @@ int count(int arr[])
 
 void ultra_sonic(int index)
 {
+    if (setAlarm == 1)
+        return;
+        
     float distance;
     float time_;
     float spd = 0.0346;
